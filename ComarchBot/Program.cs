@@ -17,8 +17,8 @@ namespace ComarchBot
         {
             
             var baseAddress = new Uri("https://ecodweb.comarch.ru");
-            var cookContainer = new CookieContainer();
-            var handler = new HttpClientHandler() { CookieContainer = cookContainer };
+            var cookieContainer = new CookieContainer();
+            var handler = new HttpClientHandler() { CookieContainer = cookieContainer };
             client = new HttpClient(handler) { BaseAddress = baseAddress};
             client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36");
             
@@ -45,8 +45,8 @@ namespace ComarchBot
 
             // 3. Error outbox request 
             string outboxFilters = "SrcPart_Name=0&DestPart_Name=0&BusinessType_Type=0&Relation=0&DocumentNumber=&DateFrom=&DateTo=&DateDocumentFrom=&DateDocumentTo=&PrintedDocuments=Blank&CanceledDocuments=Blank&FinalizedDocuments=Blank&Error=Checked&DeliveryPointIln=&MessageType=&DocumentReferenceNumber=";
-            cookContainer.Add(baseAddress, new Cookie("OutboxFilterParam", outboxFilters));
-            cookContainer.Add(baseAddress, new Cookie("OutboxPageSize", "50"));
+            cookieContainer.Add(baseAddress, new Cookie("OutboxFilterParam", outboxFilters));
+            cookieContainer.Add(baseAddress, new Cookie("OutboxPageSize", "50"));
             var urlOutbox = "/App/Pages/Outbox.aspx";
             response = await client.GetAsync(urlOutbox);
             response.EnsureSuccessStatusCode();
