@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -26,10 +27,13 @@ namespace ComarchBot
             string urlLogin = "/App/Pages/Login.aspx?info=sessionExpired&ReturnUrl=%2fApp%2fPages%2fOutbox.aspx";
             var response = await client.GetAsync(urlLogin);
             var responseString = await response.Content.ReadAsStringAsync();
-            
+
             // 2. Login request
-            string login = "username";
-            string password = "password";
+            string login;
+            using (var f = File.OpenText("_Login.txt")) {login = f.ReadLine();}
+            string password;
+            using (var f = File.OpenText("_Password.txt")) {password = f.ReadLine(); }
+
             var values = new Dictionary<string, string>
             {
                 { "__VIEWSTATE", GetInputValue("__VIEWSTATE", responseString)},
