@@ -13,15 +13,17 @@ namespace ComarchBot
     class Program
     {        
         static async Task Main(string[] args)
-        {            
+        {
+            System.Net.ServicePointManager.SecurityProtocol |= SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+
             var baseAddress = new Uri("https://ecodweb.comarch.ru");
             var cookieContainer = new CookieContainer();
             var handler = new HttpClientHandler() { CookieContainer = cookieContainer };
             var client = new HttpClient(handler) { BaseAddress = baseAddress};
-            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/92.0.4515.159 Safari/537.36");
+            client.DefaultRequestHeaders.Add("User-Agent", "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/94.0.4606.61 Safari/537.36");
             
             // 1. First request to get aspx <input> values
-            var urlLogin = "/App/Pages/Login.aspx?info=sessionExpired&ReturnUrl=%2fApp%2fPages%2fOutbox.aspx";
+            var urlLogin = "/App/Pages/Login.aspx";
             var response = await client.GetAsync(urlLogin);
             response.EnsureSuccessStatusCode();
             var responseString = await response.Content.ReadAsStringAsync();
